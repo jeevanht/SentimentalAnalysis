@@ -1,0 +1,11 @@
+Queries to input data in webapp:
+
+
+1. No of tweets per day(sample info)
+select str_to_date(concat(substring(created_at, 5,6)," ", substring(created_at, -4,4)),'%b %e %Y') as Date, count(*) as Number_of_Tweets from tweets group by Date order by Date Desc limit 1;
+
+2. Top 10 Negative Tweets
+select tweets.original_author, tweets.text, negativeScore from sentiments inner join tweets on tweets.id = sentiments.id and tweets.created_at = sentiments.created_at order by negativeScore desc limit 10;
+
+3. Trend in sentiments vs date
+select str_to_date(concat(substring(created_at, 5,6)," ", substring(created_at, -4,4)),'%b %e %Y') as Date, sentiment, count(*) as Count from sentiments group by Date, sentiment order by Date desc limit 4;

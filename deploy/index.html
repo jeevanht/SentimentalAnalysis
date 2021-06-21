@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Twitter Sentimental Analysis</title>
+        <!-- import plugin script -->
+        <!-- Latest compiled and minified CSS -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <!-- Popper JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+    </head>
+    <body>
+        <!-- line chart canvas element -->
+        <div class="container">
+			
+		  <h1 class="text-info text-center" style="margin: 20px;"> Covid 19 Tweets Sentimental Analysis </h1>
+		  <hr>
+		  <div class="row">
+            <div class="col-sm-9 offset-sm-3">
+			  <h2 class="text-info mt-10" style="margin: 20px;">Number of Tweets Today:  <span id="count"></span> </h2>
+			</div>
+          </div>
+          <hr>
+		  <h3 class="text-info text-center" style="margin: 20px;"> Sentiments share in tweets</h3>
+          <hr>
+		  <div class="row">
+            <div class="col-sm-9 offset-sm-3">
+              <canvas id="countries" width="600" height="400"></canvas>
+            </div>
+          </div>
+		  <hr>
+		  <h3 class="text-info mt-10 text-center" style="margin: 20px;">Top 10 Negative Tweets </h3>
+          <hr>
+		  <div class="row">
+            <div class="col-sm-10 offset-sm-1">
+                <table class="table table-responsive table-striped">
+                  <thead>
+                    <tr>
+                      <th>Author</th>
+                      <th>Text</th>
+                      <th>Score</th>
+                    </tr>
+                  </thead>
+                  <tbody id="negative-tweets">            
+                  </tbody>
+                </table>
+            </div>
+          </div>
+          
+        </div>
+        <script>
+          $(document).ready(function(){
+
+            $.get("https://wk5pnyjusj.execute-api.us-east-1.amazonaws.com/default/get_tweets_per_day", function (argument) {
+              console.log(JSON.parse(argument))
+              $("#count").html(JSON.parse(argument)[0].tweets_count)
+            })
+
+            $.get("https://kofaow3yt9.execute-api.us-east-1.amazonaws.com/default/top-negative-tweets", function(res){
+              res = JSON.parse(res)
+              console.log(res)
+              rows = ""
+              for (var i = 0; i < res.length; i++) {
+                rows  += '<tr> \
+                  <td>'+ res[i].original_author+ '</td> \
+                  <td>'+ res[i].text +'</td> \
+                  <td>'+ (res[i].negativeScore * 100).toFixed(3) + '</td> \
+                </tr>';
+              }
+              $("#negative-tweets").append(rows)
+            })
+
+            $.get("https://jxi6f1f598.execute-api.us-east-1.amazonaws.com/default/trend-sentiments-date", function(res){
+               // line chart data
+              res = JSON.parse(res)
+              console.log(res)
+              
+              neutral = []
+              positive = []
+              mixed = []
+              negative = []
+              dates = []
+              for (var i = 0; i < res.length; i++) {
+                if (res[i].sentiment == "NEUTRAL"){
+                  neutral.push(res[i].count)
+                }else if(res[i].sentiment == "NEGATIVE"){
+                  negative.push(res[i].count)
+                }else if(res[i].sentiment == "POSITIVE"){
+                  positive.push(res[i].count)
+                }else if(res[i].sentiment == "MIXED"){
+                  mixed.push(res[i].count)
+                }
+                dates.push(res[i].date)
+              }
+
+
+            // pie chart options
+            var pieOptions = {
+              segmentShowStroke : false,
+              animateScale : true,
+			  legend :{
+				display: true,
+				labels : ['a','b','c','d']
+				}
+			};
+            var pieData = [
+                {
+                    label: "Negative",
+                    value: negative.reduce(function(a, b){ return a + b; }, 0),
+                    color:"#878BB6"
+                },
+                {
+                    label : "Positive",
+                    value: positive.reduce(function(a, b){ return a + b; }, 0),
+                    color : "#4ACAB4"
+                },
+                {
+                    label : "Mixed",
+                    value: mixed.reduce(function(a, b){ return a + b; }, 0),
+                    color : "#FF8153"
+                },
+                {
+                    label : "Neutral",
+                    value: neutral.reduce(function(a, b){ return a + b; }, 0),
+                    color : "#FFEA88"
+                }];
+
+            // get pie chart canvas
+            var countries= document.getElementById("countries").getContext("2d");
+            // draw pie chart
+            new Chart(countries).Pie(pieData, pieOptions);
+             
+             });
+          })
+        </script>
+    </body>
+</html>

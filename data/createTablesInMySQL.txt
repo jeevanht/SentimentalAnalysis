@@ -1,0 +1,3 @@
+create table tweets (id VARCHAR(1000),created_at VARCHAR(1000) ,source VARCHAR(1000),text VARCHAR(1000),lang VARCHAR(1000),favorite_count VARCHAR(1000),retweet_count VARCHAR(1000),original_author VARCHAR(1000),possibly_sensitive VARCHAR(1000),hashtags VARCHAR(1000),user_mentions VARCHAR(1000),place VARCHAR(1000),place_coord_boundaries VARCHAR(1000), PRIMARY KEY (id, created_at))
+
+create table sentiments(id VARCHAR(1000),created_at VARCHAR(1000),text VARCHAR(1000), sentiment VARCHAR(1000), mixedScore VARCHAR(1000), negativeScore VARCHAR(1000), neutralScore VARCHAR(1000), positiveScore VARCHAR(1000), PRIMARY KEY (id, created_at));
