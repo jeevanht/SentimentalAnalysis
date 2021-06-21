@@ -11,6 +11,14 @@ This project develops the cloud infrastructure prototype that includes
 different cloud services to handle the live streaming twitter data and 
 present the insights through Natural Language Processing on the tweets.
 
+## Programming Languages
+
+- Python
+
+- JavaScript
+
+- HTML
+
 ## AWS Services Utilised 
 
 - EC2
