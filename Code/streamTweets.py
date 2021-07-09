@@ -2,7 +2,7 @@
 """
 Created on Mon May 11 15:17:46 2020
 
-@author: avlok-pc
+@author: Jeevan
 """
 
 import tweepy
