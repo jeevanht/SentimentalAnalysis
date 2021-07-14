@@ -2,7 +2,7 @@
 """
 Created on Sat May 16 01:28:05 2020
 
-@author: avlok-pc
+@author: jeevan
 """
 
 import boto3
@@ -21,9 +21,9 @@ translate = boto3.client(service_name='translate', region_name='us-east-1')
 comprehend = boto3.client(service_name='comprehend', region_name='us-east-1')
 
 #database connection
-cnx = pymysql.connect(host='avlok.ckiej05nbavj.us-east-1.rds.amazonaws.com', 
-                      user='avlok', 
-                      password='Avlok2020',
+cnx = pymysql.connect(host='jeevan.ckiej05nbavj.us-east-1.rds.amazonaws.com', 
+                      user='jeevan', 
+                      password='jeevan2020',
                       db='twitterdata')
 
 cursor = cnx.cursor()
