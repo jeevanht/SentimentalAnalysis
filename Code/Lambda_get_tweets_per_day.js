@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-    host: 'avlok.ckiej05nbavj.us-east-1.rds.amazonaws.com', 
-    user: 'avlok', 
-    password: 'Avlok2020',
+    host: 'jeevan.ckiej05nbavj.us-east-1.rds.amazonaws.com', 
+    user: 'jeevan', 
+    password: 'jeevan2020',
     database: "twitterdata"
 });
 
